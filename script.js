@@ -1,79 +1,89 @@
 class GameState {
     constructor() {
-        // Load state from local storage or set defaults
-        const savedState = localStorage.getItem('crmState');
-        if (savedState) {
-            const parsed = JSON.parse(savedState);
-            this.xp = parsed.xp || { mental: 0, fisico: 0, espiritual: 0 };
-            this.coins = parsed.coins || 0;
-            this.tasks = parsed.tasks || this.getDefaultTasks();
-            this.goals = parsed.goals || { mental: [], fisico: [], espiritual: [] };
-            this.rewards = parsed.rewards || this.getDefaultRewards();
-            this.challenges = parsed.challenges || this.getDefaultChallenges();
+        // Initialize state with defaults first (loading state)
+        this.xp = { mental: 0, fisico: 0, espiritual: 0 };
+        this.coins = 0;
+        this.tasks = this.getDefaultTasks();
+        this.goals = { mental: [], fisico: [], espiritual: [] };
+        this.rewards = this.getDefaultRewards();
+        this.challenges = this.getDefaultChallenges();
+        this.routines = this.getDefaultRoutines();
+        this.englishState = this.getDefaultEnglishState();
+        this.spiritualState = this.getDefaultSpiritualState();
 
-            // MIGRATION: Check if routines are in old format (numeric keys)
-            if (parsed.routines) {
-                const routineKeys = Object.keys(parsed.routines);
-                const isOldFormat = routineKeys.some(k => !isNaN(k));
-
-                if (isOldFormat) {
-                    console.log('🔄 Migrando rutinas del formato antiguo al nuevo...');
-                    // Old format detected - migrate to new tri-category structure
-                    const oldRoutines = parsed.routines;
-                    const newRoutines = this.getDefaultRoutines();
-
-                    // Preserve old physical routines in the fisico category
-                    for (let day = 0; day <= 6; day++) {
-                        if (oldRoutines[day]) {
-                            newRoutines.fisico[day] = {
-                                name: oldRoutines[day].name,
-                                subs: oldRoutines[day].subs || []
-                            };
-                        }
-                    }
-
-                    this.routines = newRoutines;
-                    console.log('✅ Migración completada. Rutinas físicas preservadas, mental y espiritual con valores por defecto.');
-                } else {
-                    // New format - use as is
-                    this.routines = parsed.routines;
-                }
-            } else {
-                this.routines = this.getDefaultRoutines();
-            }
-
-            this.englishState = parsed.englishState || this.getDefaultEnglishState();
-            this.spiritualState = parsed.spiritualState || this.getDefaultSpiritualState();
-
-            // Auto-save after migration
-            if (parsed.routines && Object.keys(parsed.routines).some(k => !isNaN(k))) {
-                console.log('💾 Guardando formato migrado...');
-                this.save();
-            }
-        } else {
-            this.xp = { mental: 0, fisico: 0, espiritual: 0 };
-            this.coins = 0;
-            this.tasks = this.getDefaultTasks();
-            this.goals = { mental: [], fisico: [], espiritual: [] };
-            this.rewards = this.getDefaultRewards();
-            this.challenges = this.getDefaultChallenges();
-            this.routines = this.getDefaultRoutines();
-            this.englishState = this.getDefaultEnglishState();
-            this.spiritualState = this.getDefaultSpiritualState();
-        }
-
-        // Initialize Supabase Sync (AFTER migration)
+        // Initialize Supabase Sync
         this.supabaseSync = null;
-        this.initSupabaseSync();
+        this.initData();
     }
 
-    async initSupabaseSync() {
-        // Only initialize if SupabaseSync class is available
+    async initData() {
+        // 1. Init Supabase
         if (typeof SupabaseSync !== 'undefined') {
             this.supabaseSync = new SupabaseSync(this);
             await this.supabaseSync.checkSession();
         }
+
+        // 2. Try Load from Cloud
+        let cloudData = null;
+        if (this.supabaseSync && this.supabaseSync.isAuthenticated()) {
+            console.log('☁️ Attempting to load from Supabase...');
+            cloudData = await this.supabaseSync.loadFromCloud();
+        }
+
+        if (cloudData) {
+            console.log('✅ Loaded data from Cloud');
+            this.loadFromObject(cloudData.state_data);
+        } else {
+            // 3. Fallback to LocalStorage
+            console.log('📂 Loading from LocalStorage');
+            const savedState = localStorage.getItem('crmState');
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                // MIGRATION: Check if routines are in old format (numeric keys)
+                if (parsed.routines) {
+                    const routineKeys = Object.keys(parsed.routines);
+                    const isOldFormat = routineKeys.some(k => !isNaN(k));
+
+                    if (isOldFormat) {
+                        console.log('🔄 Migrando rutinas del formato antiguo al nuevo...');
+                        // Old format detected - migrate to new tri-category structure
+                        const oldRoutines = parsed.routines;
+                        const newRoutines = this.getDefaultRoutines();
+
+                        // Preserve old physical routines in the fisico category
+                        for (let day = 0; day <= 6; day++) {
+                            if (oldRoutines[day]) {
+                                newRoutines.fisico[day] = {
+                                    name: oldRoutines[day].name,
+                                    subs: oldRoutines[day].subs || []
+                                };
+                            }
+                        }
+
+                        parsed.routines = newRoutines; // Update parsed object with new routines
+                        console.log('✅ Migración completada. Rutinas físicas preservadas, mental y espiritual con valores por defecto.');
+                    }
+                }
+                this.loadFromObject(parsed);
+                // If we have local data but no cloud data, and we are logged in -> Upload
+                if (this.supabaseSync && this.supabaseSync.isAuthenticated()) {
+                    console.log('⬆️ uploading local data to empty cloud');
+                    this.save();
+                }
+            }
+        }
+
+        // 4. Render
+        this.renderAll();
     }
+
+    // async initSupabaseSync() { // This method is now integrated into initData
+    //     // Only initialize if SupabaseSync class is available
+    //     if (typeof SupabaseSync !== 'undefined') {
+    //         this.supabaseSync = new SupabaseSync(this);
+    //         await this.supabaseSync.checkSession();
+    //     }
+    // }
 
     getStateObject() {
         // Serialize current state for cloud sync
@@ -542,7 +552,7 @@ class GameState {
         ['mental', 'fisico', 'espiritual'].forEach(category => {
             const listContainer = document.getElementById(`list-${category}`);
             if (!listContainer) return;
-            listContainer.innerHTML = '';
+            listContainer.innerHTML = ''; // Prevent duplicates
 
             // Routine Banner for Physical (or others if we expand)
             if (category === 'fisico') {
@@ -675,6 +685,15 @@ class GameState {
         ['fisico', 'mental', 'espiritual'].forEach(category => {
             const routine = this.routines[category][today];
             if (!routine) return;
+
+            // Rest Day Logic
+            if (routine.name === 'Descanso' || routine.name === 'Descanso Activo' || routine.name === 'Descanso Sagrado' || routine.name === 'Descanso Mental') {
+                // If it's a rest day, we might want to ensure no old routine tasks linger? 
+                // Or maybe just show a "Rest" task?
+                // For now, let's NOT generate the daily exercise task.
+                // Optionally clear logic if needed, but for now just return prevents creation.
+                return;
+            }
 
             const taskId = `daily-${category}-routine`;
             const icon = category === 'mental' ? '🧠' : (category === 'espiritual' ? '✨' : '🏋️');
