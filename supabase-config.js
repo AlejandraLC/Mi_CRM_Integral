@@ -1,8 +1,8 @@
 // Supabase Configuration
 // IMPORTANT: Replace these with your actual Supabase project credentials
 export const SUPABASE_CONFIG = {
-    url: 'https://YOUR-PROJECT-ID.supabase.co',
-    anonKey: 'YOUR-ANON-KEY-HERE'
+    url: 'https://gkrhxdcybsvijubqiilq.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrcmh4ZGN5YnN2aWp1YnFpaWxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMDc2NzEsImV4cCI6MjA4NTg4MzY3MX0.Ddk5jT_XBmpoEYt1DB02unRbkY8US3sqOrS-0YE_OPw'
 };
 
 // Instructions to get your credentials:
