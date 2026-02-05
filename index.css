@@ -202,6 +202,8 @@ body::after {
 .rewards-list-sidebar .reward-card {
     padding: 0.8rem;
     font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
 }
 
 .rewards-list-sidebar h4 {
@@ -221,6 +223,27 @@ body::after {
 .rewards-list-sidebar .redeem-btn {
     padding: 3px 8px;
     font-size: 0.75rem;
+    cursor: pointer;
+    background: var(--accent-green);
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+
+.reset-btn {
+    margin-top: 1rem;
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.4);
 }
 
 /* MAIN CONTENT */
@@ -237,6 +260,9 @@ body::after {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    flex-wrap: wrap;
+    /* Allow wrap for small screens */
+    gap: 1rem;
 }
 
 .main-header h2 {
@@ -297,151 +323,6 @@ body::after {
 .task-column {
     height: auto;
     min-height: 400px;
-}
-
-.challenges-section {
-    margin-top: 3rem;
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.container {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 3rem;
-    text-align: center;
-    box-shadow: var(--glass-shadow);
-    max-width: 500px;
-    width: 90%;
-    animation: fadeIn 0.8s ease-out;
-}
-
-h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    margin-bottom: 2.5rem;
-    font-weight: 400;
-}
-
-.button-group {
-    display: grid;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.crm-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-weight: 500;
-}
-
-.crm-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.crm-btn:active {
-    transform: translateY(0);
-}
-
-.btn-mental {
-    border-left: 4px solid var(--accent-blue);
-}
-
-.btn-mental:hover {
-    background: rgba(59, 130, 246, 0.15);
-    border-color: var(--accent-blue);
-}
-
-.btn-fisico {
-    border-left: 4px solid var(--accent-green);
-}
-
-.btn-fisico:hover {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: var(--accent-green);
-}
-
-.btn-espiritual {
-    border-left: 4px solid var(--accent-purple);
-}
-
-.btn-espiritual:hover {
-    background: rgba(168, 85, 247, 0.15);
-    border-color: var(--accent-purple);
-}
-
-.xp-display {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 2rem;
-}
-
-.xp-stat span {
-    display: block;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-top: 0.25rem;
-}
-
-/* Tasks Section - Interactive Columns */
-.tasks-container {
-    display: flex;
-    flex-wrap: wrap;
-    /* Fallback for mobile */
-    gap: 1.5rem;
-    text-align: left;
-    margin-bottom: 3rem;
-    min-height: 500px;
-}
-
-.task-column {
-    flex: 1;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -523,6 +404,9 @@ h1 {
     font-size: 0.8rem;
     opacity: 0.6;
     transition: opacity 0.2s;
+    min-width: 32px;
+    /* Slight increase */
+    min-height: 32px;
 }
 
 .goal-actions button:hover,
@@ -643,7 +527,8 @@ h1 {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
-    padding: 6px;
+    padding: 8px;
+    /* Increased padding */
     border-radius: 4px;
     margin-bottom: 6px;
     font-size: 0.85rem;
@@ -661,7 +546,8 @@ h1 {
     background: var(--border-color);
     color: white;
     border: none;
-    padding: 6px;
+    padding: 8px;
+    /* Slightly larger */
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
@@ -755,7 +641,7 @@ h1 {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 0.5rem;
+    padding: 0.8rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.8rem;
@@ -797,725 +683,81 @@ h1 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     color: #fce7f3;
-    /* Light pinkish/gold tint */
 }
 
-/* --- ROUTINE CONFIG VIEW --- */
-#view-config-routine {
-    max-width: 600px;
-    margin: 0 auto;
-    background: rgba(15, 23, 42, 0.95);
-    padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-}
-
-.config-header {
+/* Header & Global Level */
+.header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
-}
-
-.config-header h2 {
-    font-size: 1.5rem;
-    color: white;
-    margin: 0;
-}
-
-.reset-plan-btn {
-    background: rgba(220, 38, 38, 0.2);
-    color: #fca5a5;
-    border: 1px solid rgba(220, 38, 38, 0.4);
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s;
-}
-
-.reset-plan-btn:hover {
-    background: rgba(220, 38, 38, 0.4);
-    color: white;
-}
-
-.config-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.day-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.day-selector label,
-.form-group label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.day-selector select,
-.form-group input,
-.form-group select,
-.form-group textarea {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border-color);
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
     width: 100%;
-}
-
-.day-selector select:focus,
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-blue);
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.routine-editor {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1.5rem;
-    border-radius: 12px;
-}
-
-.form-group textarea {
-    min-height: 150px;
-    resize: vertical;
-    line-height: 1.5;
-}
-
-.action-buttons-config {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-}
-
-.save-btn {
-    background: var(--accent-blue);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    transition: all 0.2s;
-}
-
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
-}
-
-.save-btn:active {
-    transform: translateY(0);
-}
-
-
-.coin-stat span {
-    color: #ffd700;
-    /* Gold */
-}
-
-.add-reward-form {
-    display: flex;
-    gap: 10px;
     margin-bottom: 1.5rem;
-}
-
-.add-reward-form input {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    color: white;
-    font-family: inherit;
-    flex: 1;
-}
-
-.add-reward-form button {
-    background: var(--accent-blue);
-    border: none;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.rewards-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    flex-wrap: wrap;
+    /* Adjusts for small screens */
     gap: 1rem;
 }
 
-.reward-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.reward-info h4 {
-    margin: 0;
-    font-size: 1rem;
-}
-
-.reward-info .cost {
-    display: block;
-    color: #ffd700;
-    font-size: 0.9rem;
-    margin-top: 5px;
-    font-weight: bold;
-}
-
-.reward-actions {
-    margin-top: 1rem;
-    display: flex;
-    width: 100%;
-    gap: 5px;
-}
-
-.redeem-btn {
-    flex: 1;
-    background: linear-gradient(135deg, #fbbf24, #d97706);
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: transform 0.2s;
-}
-
-.redeem-btn:hover {
-    transform: scale(1.05);
-}
-
-.delete-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.5);
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 5px 10px;
-}
-
-.delete-btn:hover {
-    background: rgba(255, 0, 0, 0.1);
-    color: #f87171;
-}
-
-/* Smart Habit - Grid System */
-.habit-grid {
-    display: flex;
-    gap: 4px;
-    margin-top: 8px;
-    margin-bottom: 4px;
-    flex-wrap: wrap;
-    /* Safety wrap for small screens */
-}
-
-.habit-square {
-    width: 14px;
-    height: 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.habit-square:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.2);
-}
-
-/* Active States per Category */
-[data-category="mental"] .habit-square.active {
-    background: var(--accent-blue);
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 5px var(--accent-blue);
-}
-
-[data-category="fisico"] .habit-square.active {
-    background: var(--accent-green);
-    border-color: var(--accent-green);
-    box-shadow: 0 0 5px var(--accent-green);
-}
-
-[data-category="espiritual"] .habit-square.active {
-    box-shadow: 0 0 5px var(--accent-purple);
-}
-
-/* Reset Button */
-.reset-btn {
-    margin-top: auto;
-    /* Push to bottom of sidebar */
-    background: transparent;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #f87171;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.reset-btn:hover {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: #ef4444;
-}
-
-/* Dashboard Progress Summary */
-.header-content {
-    flex: 1;
-}
-
-/* Routine Banner */
-.routine-banner {
-    background: linear-gradient(90deg, rgba(34, 197, 94, 0.2), transparent);
-    border-left: 4px solid var(--accent-green);
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: var(--accent-green);
-    animation: slideIn 0.3s ease;
-}
-
-/* Subtasks Checklist */
-.subtasks-list {
-    margin: 0.5rem 0 1rem 0;
-    padding-left: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.subtask-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-}
-
-.subtask-item input[type="checkbox"] {
-    accent-color: var(--accent-green);
-    cursor: pointer;
-}
-
-.subtask-item span.done {
-    text-decoration: line-through;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-/* TASK ITEM */
-.task-item {
-    background: var(--card-bg);
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-/* Global Level Bar */
 .global-level-container {
-    margin-bottom: 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 300px;
 }
 
 .level-info {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 5px;
     font-size: 0.9rem;
-    font-weight: 600;
 }
 
 .level-badge {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
-}
-
-.level-bar-bg {
-    height: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-/* --- ENGLISH B2 SECTION --- */
-.english-section-container {
-    margin-bottom: 1.5rem;
-}
-
-.english-card {
-    background: linear-gradient(145deg, rgba(30, 58, 138, 0.3), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 12px;
-    padding: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-
-/* British touch */
-.english-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, transparent 50%, rgba(220, 38, 38, 0.2) 50%);
-    pointer-events: none;
-}
-
-.english-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.english-header h4 {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-}
-
-.savings-badge {
-    background: rgba(16, 185, 129, 0.2);
-    color: #34d399;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
+    color: var(--accent-purple);
     font-weight: bold;
 }
 
-.topic-box {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0.8rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.topic-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.topic-nav button {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.topic-nav button:hover {
-    color: white;
-}
-
-.month-label {
-    font-weight: 700;
-    color: var(--accent-blue);
-    font-size: 0.9rem;
-}
-
-.topic-desc {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin: 0;
-    font-style: italic;
-}
-
-.english-checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.check-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.02);
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.check-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.check-item.checked {
-    background: rgba(59, 130, 246, 0.1);
-}
-
-.check-item.checked span {
-    text-decoration: line-through;
-    opacity: 0.7;
-}
-
-.check-item input {
-    accent-color: var(--accent-blue);
-}
-
-.english-progress {
-    margin-bottom: 0.8rem;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-bottom: 4px;
-}
-
-.progress-bar-bg {
-    height: 6px;
+.level-bar-bg {
+    height: 8px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: var(--accent-blue);
-    transition: width 0.3s ease;
-}
-
-.english-actions {
-    text-align: right;
-}
-
-.edit-plan-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    cursor: pointer;
-}
-
-.edit-plan-btn:hover {
-    color: white;
-    text-decoration: underline;
 }
 
 .level-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-    width: 0%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
     transition: width 0.5s ease;
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
 }
 
-/* --- ANNUAL GOALS SECTION --- */
-.annual-goals-container {
-    margin-bottom: 2rem;
-}
-
-.annual-goals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-}
-
-.goal-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.goal-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.goal-card.goal-fisico {
-    border-left: 4px solid var(--accent-green);
-}
-
-.goal-card.goal-mental {
-    border-left: 4px solid var(--accent-blue);
-}
-
-.goal-card.goal-espiritual {
-    border-left: 4px solid var(--accent-purple);
-}
-
-.goal-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.goal-card h4 {
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
-    color: white;
-}
-
-.goal-card p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-/* --- SPIRITUAL SECTION --- */
-.spiritual-section-container {
-    margin-bottom: 1.5rem;
-}
-
-.spiritual-card {
-    background: linear-gradient(145deg, rgba(139, 92, 246, 0.2), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    border-radius: 12px;
-    padding: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.spiritual-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, transparent 50%, rgba(139, 92, 246, 0.3) 50%);
-    pointer-events: none;
-}
-
-.spiritual-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.spiritual-header h4 {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-}
-
-.spiritual-checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.spiritual-progress {
-    margin-bottom: 0.8rem;
-}
-
-.spiritual-actions {
-    text-align: right;
-}
-
-/* --- ROUTINE CONFIG UPDATES --- */
-.category-header {
-    margin: 0 0 1rem 0;
-    padding: 0.5rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.fisico-header {
-    background: rgba(34, 197, 94, 0.2);
-    color: var(--accent-green);
-    border-left: 4px solid var(--accent-green);
-}
-
-.mental-header {
-    background: rgba(59, 130, 246, 0.2);
-    color: var(--accent-blue);
-    border-left: 4px solid var(--accent-blue);
-}
-
-.espiritual-header {
-    background: rgba(139, 92, 246, 0.2);
-    color: var(--accent-purple);
-    border-left: 4px solid var(--accent-purple);
-}
-
-.routine-editor {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-}
-
-.routine-editor textarea {
-    min-height: 80px;
-}
-
-/* Circular Progress Rings */
+/* Rings Container */
 .rings-container {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
+    /* Ensure rings wrap */
+    justify-content: center;
 }
 
 .ring-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 5px;
 }
 
 .ring-wrapper {
     position: relative;
     width: 80px;
     height: 80px;
+}
+
+/* .progress-ring handled in HTML SVG, but ensure transform origin */
+.progress-ring {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.progress-ring circle {
+    transition: stroke-dashoffset 0.5s ease;
 }
 
 .ring-text {
@@ -1528,87 +770,279 @@ h1 {
     color: white;
 }
 
-.progress-ring circle {
-    transition: stroke-dashoffset 0.5s ease;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-}
-
-/* Neon Glow Effects */
-.mental-ring {
-    filter: drop-shadow(0 0 4px var(--accent-blue));
-}
-
-.fisico-ring {
-    filter: drop-shadow(0 0 4px var(--accent-green));
-}
-
-.espiritual-ring {
-    filter: drop-shadow(0 0 4px var(--accent-purple));
-}
-
 .ring-label {
     font-size: 0.8rem;
     color: var(--text-secondary);
     text-transform: uppercase;
 }
 
-.progress-summary {
+.habit-grid {
     display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    max-width: 600px;
+    gap: 4px;
+    margin-top: 8px;
 }
 
-.progress-item {
-    flex: 1;
-}
-
-.p-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-bottom: 4px;
-    display: block;
-}
-
-.p-bar {
-    height: 6px;
+.habit-square {
+    width: 16px;
+    height: 16px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
-    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-.p-fill {
-    height: 100%;
-    transition: width 0.5s ease;
+.habit-square:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.mental-fill {
-    background: var(--accent-blue);
-}
-
-.fisico-fill {
+.habit-square.active {
     background: var(--accent-green);
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
 }
 
-.espiritual-fill {
-    background: var(--accent-purple);
-}
-
-.cycle-badge {
-    color: #ffd700;
-    font-weight: bold;
-    font-size: 0.75rem;
-}
-
-.task-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Auth Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-.task-text {
-    font-size: 0.95rem;
+.modal-content {
+    background: #1e293b;
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.modal h2 {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.modal-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+#auth-form input {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: white;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
     font-weight: 500;
+    font-size: 0.95rem;
+    min-height: 48px;
+    /* Mobile accessibility */
+}
+
+.btn-primary {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.auth-user {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* --- MOBILE RESPONSIVE (Max 768px) --- */
+@media (max-width: 768px) {
+    .app-layout {
+        display: block;
+        /* Override grid */
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Main Content adjustments for Bottom Nav */
+    .main-content {
+        height: calc(100vh - 70px);
+        /* Leave space for bottom nav */
+        overflow-y: auto;
+        padding-bottom: 80px;
+        /* Safe padding for content */
+        width: 100%;
+    }
+
+    /* Transform Sidebar to Bottom Navigation */
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: #1e293b;
+        /* Solid background for visibility */
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+        padding: 0;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 999;
+        overflow: visible;
+        /* Override overflow-y auto */
+    }
+
+    /* Hide sidebar parts not needed in bottom nav */
+    .sidebar-header,
+    .rewards-sidebar,
+    .coin-display-sidebar,
+    .reset-btn {
+        display: none;
+    }
+
+    /* Adjust Navigation Menu for Bottom Bar */
+    .nav-menu {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-around;
+        margin-bottom: 0;
+        gap: 0;
+        height: 100%;
+    }
+
+    .nav-btn {
+        background: transparent !important;
+        border: none;
+        padding: 0;
+        text-align: center;
+        font-size: 0.7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        height: 100%;
+        color: var(--text-secondary);
+        border-radius: 0;
+    }
+
+    /* Icon size increase for mobile nav */
+    .nav-btn::before {
+        font-size: 1.5rem;
+        margin-bottom: 2px;
+        content: attr(data-icon);
+        /* We can add data-icon to HTML */
+    }
+
+    /* Active State for Bottom Nav */
+    .nav-btn.active {
+        color: var(--accent-blue);
+        border-top: 3px solid var(--accent-blue);
+    }
+
+    /* Stack Dashboard Columns */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        /* Single column */
+        gap: 2rem;
+    }
+
+    .tasks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .task-column {
+        width: 100%;
+        flex: none;
+        /* Disable flex growth logic on mobile */
+    }
+
+    /* Header Adjustments */
+    .main-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .xp-summary {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .rings-container {
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    /* Larger Touch Targets */
+    button,
+    .nav-btn,
+    .action-btn,
+    input[type="checkbox"] {
+        min-height: 48px;
+        min-width: 48px;
+    }
+
+    .mini-form button {
+        min-width: 48px;
+    }
+
+    .item-actions button {
+        min-height: 48px;
+        min-width: 48px;
+        padding: 10px;
+        /* Expand touch area */
+    }
+
+    .goal-actions button {
+        min-height: 48px;
+        min-width: 48px;
+    }
+
+    /* Challenges Section Stack */
+    .challenges-section {
+        grid-template-columns: 1fr;
+    }
 }

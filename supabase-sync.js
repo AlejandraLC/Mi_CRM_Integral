@@ -137,6 +137,7 @@ class SupabaseSync {
 
         // Sync after sign in
         await this.syncNow();
+        this.setupRealtime();
     }
 
     onSignOut() {
@@ -147,6 +148,57 @@ class SupabaseSync {
 
     isAuthenticated() {
         return !!this.currentUser;
+    }
+
+    // ============ REALTIME ============
+
+    setupRealtime() {
+        if (!this.supabase || !this.currentUser) return;
+
+        // Unsubscribe existing if any (simplification: assume one channel)
+        if (this.realtimeChannel) {
+            this.supabase.removeChannel(this.realtimeChannel);
+        }
+
+        console.log('📡 Setting up realtime subscription for user:', this.currentUser.id);
+
+        this.realtimeChannel = this.supabase
+            .channel('game_states_changes')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'game_states',
+                    filter: `user_id=eq.${this.currentUser.id}`
+                },
+                (payload) => {
+                    console.log('🔔 Realtime update received:', payload);
+                    this.handleRealtimeUpdate(payload);
+                }
+            )
+            .subscribe((status) => {
+                console.log('📡 Realtime status:', status);
+            });
+    }
+
+    async handleRealtimeUpdate(payload) {
+        // Debounce or simple check
+        if (this.syncInProgress) return;
+
+        // Check if the update is from OURSELVES (optimistic update might have triggered it?)
+        // Payload has 'new' data. We can compare timestamps.
+        const cloudTime = new Date(payload.new.updated_at);
+        const localState = this.gameState.getStateObject();
+        const localTime = new Date(localState.lastModified || 0);
+
+        if (cloudTime > localTime) {
+            console.log('⬇️ Realtime: Cloud is newer - downloading update');
+            this.gameState.loadFromObject(payload.new.state_data);
+            this.gameState.save(); // Save to local storage (but don't loop-upload)
+            this.gameState.renderAll();
+            this.updateSyncStatus('✅ Synced (Realtime)');
+        }
     }
 
     // ============ CLOUD SYNC ============
