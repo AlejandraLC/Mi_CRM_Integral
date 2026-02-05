@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reset CRM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .success {
+            background: #22c55e;
+            color: white;
+        }
+
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 Herramienta de Diagnóstico CRM</h1>
+
+    <div>
+        <h3>Estado Actual:</h3>
+        <div id="status">Cargando...</div>
+    </div>
+
+    <div>
+        <h3>Acciones:</h3>
+        <button class="danger" onclick="clearStorage()">🗑️ Limpiar localStorage (RESET COMPLETO)</button>
+        <button class="success" onclick="goToApp()">➡️ Ir a la Aplicación</button>
+    </div>
+
+    <script>
+        function checkStatus() {
+            const status = document.getElementById('status');
+            const saved = localStorage.getItem('crmState');
+
+            if (!saved) {
+                status.innerHTML = '❌ No hay datos guardados (primera vez)';
+                return;
+            }
+
+            try {
+                const data = JSON.parse(saved);
+                let html = '<strong>✅ Datos encontrados:</strong><br>';
+                html += `- XP: ${JSON.stringify(data.xp)}<br>`;
+                html += `- Coins: ${data.coins}<br>`;
+                html += `- Routines type: ${typeof data.routines}<br>`;
+
+                // Check routine structure
+                if (data.routines) {
+                    const keys = Object.keys(data.routines);
+                    html += `- Routine keys: ${keys.join(', ')}<br>`;
+
+                    // Check if old format (numeric keys)
+                    if (keys.some(k => !isNaN(k))) {
+                        html += '<br><strong>⚠️ FORMATO ANTIGUO DETECTADO:</strong><br>';
+                        html += '❌ Formato de rutinas antiguo<br>';
+                        html += '<br><strong>✨ BUENAS NOTICIAS:</strong><br>';
+                        html += '✅ La aplicación ahora tiene <strong>migración automática</strong><br>';
+                        html += '✅ Tus rutinas físicas se preservarán automáticamente<br>';
+                        html += '✅ Se agregarán rutinas mentales y espirituales por defecto<br>';
+                        html += '<br>💡 Simplemente abre index.html y la migración ocurrirá automáticamente';
+                    } else {
+                        html += '<br>✅ Formato de rutinas correcto (tri-categoría)';
+                    }
+                }
+
+                status.innerHTML = html;
+            } catch (e) {
+                status.innerHTML = `❌ Error leyendo datos: ${e.message}`;
+            }
+        }
+
+        function clearStorage() {
+            if (confirm('¿Estás segura? Esto borrará TODOS los datos guardados.')) {
+                localStorage.clear();
+                alert('✅ localStorage limpiado. La aplicación se reiniciará con datos por defecto.');
+                checkStatus();
+            }
+        }
+
+        function goToApp() {
+            window.location.href = 'index.html';
+        }
+
+        checkStatus();
+    </script>
+</body>
+
+</html>

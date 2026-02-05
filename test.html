@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test Diagnóstico</title>
+</head>
+
+<body>
+    <h1>Test de Diagnóstico</h1>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+
+        try {
+            output.innerHTML += '<p>✅ JavaScript funcionando</p>';
+
+            // Test localStorage
+            localStorage.setItem('test', 'ok');
+            const test = localStorage.getItem('test');
+            output.innerHTML += `<p>✅ localStorage: ${test}</p>`;
+
+            // Test GameState
+            output.innerHTML += '<p>Cargando script.js...</p>';
+
+            // Load the actual script
+            const script = document.createElement('script');
+            script.src = 'script.js';
+            script.onload = () => {
+                output.innerHTML += '<p>✅ script.js cargado</p>';
+
+                try {
+                    const game = new GameState();
+                    output.innerHTML += '<p>✅ GameState creado</p>';
+                    output.innerHTML += `<p>XP Mental: ${game.xp.mental}</p>`;
+                    output.innerHTML += `<p>Spiritual State: ${game.spiritualState ? 'OK' : 'FALTA'}</p>`;
+                    output.innerHTML += `<p>Routines: ${JSON.stringify(Object.keys(game.routines))}</p>`;
+                } catch (e) {
+                    output.innerHTML += `<p>❌ Error creando GameState: ${e.message}</p>`;
+                    output.innerHTML += `<pre>${e.stack}</pre>`;
+                }
+            };
+            script.onerror = () => {
+                output.innerHTML += '<p>❌ Error cargando script.js</p>';
+            };
+            document.head.appendChild(script);
+
+        } catch (e) {
+            output.innerHTML += `<p>❌ Error: ${e.message}</p>`;
+        }
+    </script>
+</body>
+
+</html>

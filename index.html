@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi CRM Personal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Mi CRM</h1>
+                <p class="subtitle">Integral</p>
+            </div>
+
+            <!-- Global Stats (Coins) -->
+            <div class="coin-display-sidebar">
+                <span class="coin-label">Monedas</span>
+                <span id="coin-count" class="coin-value">0</span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-view="dashboard" onclick="game.switchView('dashboard')">📊
+                    Dashboard</button>
+                <button class="nav-btn" data-view="mental" onclick="game.switchView('mental')">🧠 Mental</button>
+                <button class="nav-btn" data-view="fisico" onclick="game.switchView('fisico')">💪 Físico</button>
+                <button class="nav-btn" data-view="espiritual" onclick="game.switchView('espiritual')">✨
+                    Espiritual</button>
+                <!-- NEW CONFIG TAB -->
+                <button class="nav-btn" data-view="config-routine" onclick="game.switchView('config-routine')">📅
+                    Configurar Rutina</button>
+            </nav>
+
+            <!-- Rewards Section (Fixed in Sidebar) -->
+            <div class="rewards-sidebar">
+                <h2 class="sidebar-section-title">🏪 Tienda</h2>
+                <div class="rewards-container-sidebar">
+                    <form id="add-reward-form" class="add-reward-form-sidebar">
+                        <input type="text" id="reward-name" placeholder="Premio" required>
+                        <input type="number" id="reward-cost" placeholder="₡" required min="1">
+                        <button type="submit">+</button>
+                    </form>
+                    <div id="rewards-list" class="rewards-list-sidebar">
+                        <!-- Rewards rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESET BUTTON -->
+            <button class="reset-btn" onclick="game.resetProgress()">⚠️ Reiniciar Progreso</button>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- Views Container -->
+            <div id="view-dashboard" class="view-section active">
+                <header class="main-header">
+                    <div class="header-content">
+                        <!-- Global Level Bar -->
+                        <div class="global-level-container">
+                            <div class="level-info">
+                                <span class="level-badge">Nivel <span id="current-level">1</span></span>
+                                <span class="xp-next-level"><span id="current-xp-total">0</span> / 1000 XP</span>
+                            </div>
+                            <div class="level-bar-bg">
+                                <div class="level-bar-fill" id="global-level-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <h2>Panel de Control</h2>
+
+                        <!-- Circular Progress Rings (Goals) -->
+                        <div class="rings-container">
+                            <!-- Mental Ring -->
+                            <div class="ring-card">
+                                <div class="ring-wrapper">
+                                    <svg class="progress-ring" width="80" height="80">
+                                        <circle class="ring-bg" stroke="#ffffff10" stroke-width="6" fill="transparent"
+                                            r="34" cx="40" cy="40" />
+                                        <circle class="ring-fill mental-ring" id="ring-mental"
+                                            stroke="var(--accent-blue)" stroke-width="6" fill="transparent" r="34"
+                                            cx="40" cy="40" />
+                                    </svg>
+                                    <span class="ring-text" id="text-ring-mental">0%</span>
+                                </div>
+                                <span class="ring-label">🧠 Metas</span>
+                            </div>
+
+                            <!-- Fisico Ring -->
+                            <div class="ring-card">
+                                <div class="ring-wrapper">
+                                    <svg class="progress-ring" width="80" height="80">
+                                        <circle class="ring-bg" stroke="#ffffff10" stroke-width="6" fill="transparent"
+                                            r="34" cx="40" cy="40" />
+                                        <circle class="ring-fill fisico-ring" id="ring-fisico"
+                                            stroke="var(--accent-green)" stroke-width="6" fill="transparent" r="34"
+                                            cx="40" cy="40" />
+                                    </svg>
+                                    <span class="ring-text" id="text-ring-fisico">0%</span>
+                                </div>
+                                <span class="ring-label">💪 Metas</span>
+                            </div>
+
+                            <!-- Espiritual Ring -->
+                            <div class="ring-card">
+                                <div class="ring-wrapper">
+                                    <svg class="progress-ring" width="80" height="80">
+                                        <circle class="ring-bg" stroke="#ffffff10" stroke-width="6" fill="transparent"
+                                            r="34" cx="40" cy="40" />
+                                        <circle class="ring-fill espiritual-ring" id="ring-espiritual"
+                                            stroke="var(--accent-purple)" stroke-width="6" fill="transparent" r="34"
+                                            cx="40" cy="40" />
+                                    </svg>
+                                    <span class="ring-text" id="text-ring-espiritual">0%</span>
+                                </div>
+                                <span class="ring-label">✨ Metas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-summary">
+                        <span class="xp-tag mental">🧠 <span id="xp-mental">0</span></span>
+                        <span class="xp-tag fisico">💪 <span id="xp-fisico">0</span></span>
+                        <span class="xp-tag espiritual">✨ <span id="xp-espiritual">0</span></span>
+                    </div>
+                </header>
+
+                <!-- ANNUAL GOALS SECTION -->
+                <div id="annual-goals-section" class="annual-goals-container"></div>
+
+                <div class="tasks-container dashboard-grid">
+                    <!-- Columns will be injected/moved here or exist here -->
+
+                    <!-- MENTAL COLUMN -->
+                    <div class="task-column" id="col-mental" data-category="mental">
+                        <h3 class="mental-title">🧠 Mental</h3>
+                        <!-- NEW ENGLISH SECTION -->
+                        <div id="english-section-content" class="english-section-container"></div>
+
+                        <div class="goals-section">
+                            <h4>Metas</h4>
+                            <div id="goals-mental" class="goals-list"></div>
+                            <form id="form-goal-mental" class="mini-form">
+                                <input type="text" placeholder="+ Meta" required>
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+                        <div class="tasks-section">
+                            <div id="routine-banner-mental"></div> <!-- Dedicated container -->
+                            <ul id="list-mental" class="task-list"></ul>
+                            <form id="form-task-mental" class="task-creation-form">
+                                <input type="text" id="text-task-mental" placeholder="Nueva tarea..." required>
+                                <div class="form-row">
+                                    <select id="freq-task-mental">
+                                        <option value="daily">Diaria</option>
+                                        <option value="weekly">Semanal</option>
+                                        <option value="monthly">Mensual</option>
+                                    </select>
+                                    <select id="goal-select-mental">
+                                        <option value="">-- Suelta --</option>
+                                    </select>
+                                </div>
+                                <button type="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- FISICO COLUMN -->
+                    <div class="task-column" id="col-fisico" data-category="fisico">
+                        <h3 class="fisico-title">💪 Físico</h3>
+                        <div class="goals-section">
+                            <h4>Metas</h4>
+                            <div id="goals-fisico" class="goals-list"></div>
+                            <form id="form-goal-fisico" class="mini-form">
+                                <input type="text" placeholder="+ Meta" required>
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+                        <div class="tasks-section">
+                            <div id="routine-banner-fisico"></div> <!-- Dedicated container -->
+                            <ul id="list-fisico" class="task-list"></ul>
+                            <form id="form-task-fisico" class="task-creation-form">
+                                <input type="text" id="text-task-fisico" placeholder="Nueva tarea..." required>
+                                <div class="form-row">
+                                    <select id="freq-task-fisico">
+                                        <option value="daily">Diaria</option>
+                                        <option value="weekly">Semanal</option>
+                                        <option value="monthly">Mensual</option>
+                                    </select>
+                                    <select id="goal-select-fisico">
+                                        <option value="">-- Suelta --</option>
+                                    </select>
+                                </div>
+                                <button type="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ESPIRITUAL COLUMN -->
+                    <div class="task-column" id="col-espiritual" data-category="espiritual">
+                        <h3 class="espiritual-title">✨ Espiritual</h3>
+                        <!-- SPIRITUAL SECTION -->
+                        <div id="spiritual-section-content" class="spiritual-section-container"></div>
+
+                        <div class="goals-section">
+                            <h4>Metas</h4>
+                            <div id="goals-espiritual" class="goals-list"></div>
+                            <form id="form-goal-espiritual" class="mini-form">
+                                <input type="text" placeholder="+ Meta" required>
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+                        <div class="tasks-section">
+                            <ul id="list-espiritual" class="task-list"></ul>
+                            <form id="form-task-espiritual" class="task-creation-form">
+                                <input type="text" id="text-task-espiritual" placeholder="Nueva tarea..." required>
+                                <div class="form-row">
+                                    <select id="freq-task-espiritual">
+                                        <option value="daily">Diaria</option>
+                                        <option value="weekly">Semanal</option>
+                                        <option value="monthly">Mensual</option>
+                                    </select>
+                                    <select id="goal-select-espiritual">
+                                        <option value="">-- Suelta --</option>
+                                    </select>
+                                </div>
+                                <button type="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenges-section">
+                    <div class="challenge-card social-challenge" id="challenge-social">
+                        <!-- Dynamic Content -->
+                    </div>
+                    <div class="challenge-card savings-challenge" id="challenge-savings">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CONFIG ROUTINE -->
+            <div id="view-config-routine" class="view-section" style="display:none;">
+                <div class="config-header">
+                    <h2>📅 Configurar Semana</h2>
+                    <button class="reset-plan-btn" onclick="game.loadMasterPlan()">🔄 Cargar Plan Maestro</button>
+                </div>
+
+                <div class="config-container">
+                    <div class="day-selector">
+                        <label>Elige el Día:</label>
+                        <select id="config-day-select" onchange="game.loadRoutineData(this.value)">
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miércoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viernes</option>
+                            <option value="6">Sábado</option>
+                            <option value="0">Domingo</option>
+                        </select>
+                    </div>
+
+                    <!-- FÍSICO -->
+                    <div class="routine-editor">
+                        <h3 class="category-header fisico-header">🏋️ Rutina Física</h3>
+                        <div class="form-group">
+                            <label>Título:</label>
+                            <input type="text" id="config-title-fisico" placeholder="Ej: Fuerza Pierna">
+                        </div>
+                        <div class="form-group full-height">
+                            <label>Ejercicios (uno por línea):</label>
+                            <textarea id="config-exercises-fisico" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- MENTAL -->
+                    <div class="routine-editor">
+                        <h3 class="category-header mental-header">🧠 Rutina Mental</h3>
+                        <div class="form-group">
+                            <label>Título:</label>
+                            <input type="text" id="config-title-mental" placeholder="Ej: Estudio Profundo">
+                        </div>
+                        <div class="form-group full-height">
+                            <label>Tareas (una por línea):</label>
+                            <textarea id="config-exercises-mental" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ESPIRITUAL -->
+                    <div class="routine-editor">
+                        <h3 class="category-header espiritual-header">✨ Rutina Espiritual</h3>
+                        <div class="form-group">
+                            <label>Título:</label>
+                            <input type="text" id="config-title-espiritual" placeholder="Ej: Geometría Básica">
+                        </div>
+                        <div class="form-group full-height">
+                            <label>Prácticas (una por línea):</label>
+                            <textarea id="config-exercises-espiritual" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons-config">
+                        <button class="save-btn" onclick="game.saveRoutineData()">💾 Guardar Rutinas del Día</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- AUTH MODAL -->
+        <div id="auth-modal" class="modal" style="display:none;" onclick="closeAuthModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="toggleAuthModal()">&times;</span>
+                <h2>☁️ Sincronización en la Nube</h2>
+                <p class="modal-subtitle">Sincroniza tus datos entre PC y móvil</p>
+
+                <div id="auth-form">
+                    <input type="email" id="auth-email" placeholder="Email" required>
+                    <input type="password" id="auth-password" placeholder="Contraseña" required>
+                    <div class="auth-buttons">
+                        <button class="btn-primary" onclick="handleSignIn()">Iniciar Sesión</button>
+                        <button class="btn-secondary" onclick="handleSignUp()">Registrarse</button>
+                    </div>
+                </div>
+
+                <div id="auth-status" style="display:none;">
+                    <p class="auth-user">✅ Conectado como: <strong><span id="user-email"></span></strong></p>
+                    <div class="auth-buttons">
+                        <button class="btn-primary" onclick="handleSyncNow()">🔄 Sincronizar Ahora</button>
+                        <button class="btn-secondary" onclick="handleSignOut()">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK & Sync Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="supabase-sync.js"></script>
+
+    <script src="script.js"></script>
+</body>

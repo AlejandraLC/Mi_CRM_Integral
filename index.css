@@ -1,0 +1,1614 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-purple: #a855f7;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Global Reset & Box Sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    /* App Layout handles scroll */
+}
+
+/* Background Decoration */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.4;
+}
+
+body::before {
+    background: var(--accent-purple);
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    background: var(--accent-blue);
+    bottom: -100px;
+    right: -100px;
+}
+
+/* --- APP LAYOUT REDESIGN --- */
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    /* Main scroll handled inside main-content */
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: rgba(0, 0, 0, 0.3);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    backdrop-filter: blur(20px);
+}
+
+.sidebar-header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 700;
+    color: white;
+}
+
+.sidebar-header .subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0 0 2rem 0;
+}
+
+/* Coin Display (Sidebar) */
+.coin-display-sidebar {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+.coin-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.coin-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Navigation */
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.nav-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+}
+
+/* Rewards Sidebar */
+.rewards-sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+.sidebar-section-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.add-reward-form-sidebar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 1rem;
+}
+
+.add-reward-form-sidebar input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+.add-reward-form-sidebar button {
+    background: var(--accent-blue);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.rewards-list-sidebar {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Sidebar Reward Cards (Compact) */
+.rewards-list-sidebar .reward-card {
+    padding: 0.8rem;
+    font-size: 0.85rem;
+}
+
+.rewards-list-sidebar h4 {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.rewards-list-sidebar .cost {
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.rewards-list-sidebar .reward-actions {
+    margin-top: 0.5rem;
+}
+
+.rewards-list-sidebar .redeem-btn {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    overflow-y: auto;
+    padding: 2rem;
+    padding-bottom: 5rem;
+    /* Extra space for bottom elements */
+    height: 100%;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.main-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.xp-summary {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.xp-tag {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.xp-tag span {
+    color: white;
+    font-weight: bold;
+}
+
+.xp-tag.mental span {
+    color: var(--accent-blue);
+}
+
+.xp-tag.fisico span {
+    color: var(--accent-green);
+}
+
+.xp-tag.espiritual span {
+    color: var(--accent-purple);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Force 3 columns */
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Single View Mode - Modified via JS to show one column */
+.single-view .dashboard-grid {
+    grid-template-columns: 1fr;
+    /* Single column centered or full */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Hide other columns in single view (Handled by JS classes usually, or CSS specificity) */
+
+/* General Card & List Updates */
+.task-column {
+    height: auto;
+    min-height: 400px;
+}
+
+.challenges-section {
+    margin-top: 3rem;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.container {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 0.8s ease-out;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+}
+
+.button-group {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.crm-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.crm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.crm-btn:active {
+    transform: translateY(0);
+}
+
+.btn-mental {
+    border-left: 4px solid var(--accent-blue);
+}
+
+.btn-mental:hover {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: var(--accent-blue);
+}
+
+.btn-fisico {
+    border-left: 4px solid var(--accent-green);
+}
+
+.btn-fisico:hover {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: var(--accent-green);
+}
+
+.btn-espiritual {
+    border-left: 4px solid var(--accent-purple);
+}
+
+.btn-espiritual:hover {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: var(--accent-purple);
+}
+
+.xp-display {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.xp-stat span {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+}
+
+/* Tasks Section - Interactive Columns */
+.tasks-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Fallback for mobile */
+    gap: 1.5rem;
+    text-align: left;
+    margin-bottom: 3rem;
+    min-height: 500px;
+}
+
+.task-column {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: default;
+    transition: flex 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.task-column:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.task-column.active {
+    flex: 2;
+    /* Expanded width */
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.task-column h3 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid;
+    cursor: pointer;
+    /* Signal clickable to expand */
+}
+
+.mental-title {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.fisico-title {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.espiritual-title {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+}
+
+/* Goals Section */
+.goals-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.goals-section h4,
+.tasks-section h4 {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.goal-card {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.goal-actions button,
+.item-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.goal-actions button:hover,
+.item-actions button:hover {
+    opacity: 1;
+}
+
+.mini-form {
+    display: flex;
+    gap: 5px;
+    margin-top: 0.5rem;
+}
+
+.mini-form input {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+/* Tasks with Metadata */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.task-content {
+    flex: 1;
+}
+
+.task-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: opacity 0.3s;
+}
+
+.task-item.completed label {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.task-meta {
+    margin-left: 24px;
+    /* Align with text */
+    margin-top: 4px;
+    display: flex;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+
+.task-goal-link {
+    margin-left: 24px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.xp-badge {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.freq-badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+}
+
+.freq-badge.daily {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.freq-badge.weekly {
+    color: #fde047;
+    background: rgba(250, 204, 21, 0.1);
+}
+
+.freq-badge.monthly {
+    color: #f9a8d4;
+    background: rgba(244, 114, 182, 0.1);
+}
+
+/* Task Creation Form */
+.task-creation-form {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.task-creation-form input,
+.task-creation-form select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+    /* Fix width issues */
+}
+
+.form-row {
+    display: flex;
+    gap: 5px;
+}
+
+.task-creation-form button {
+    width: 100%;
+    background: var(--border-color);
+    color: white;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.task-creation-form button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Challenges Section */
+.challenges-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.challenge-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: left;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 160px;
+}
+
+.challenge-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.challenge-header h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.config-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 5px;
+    opacity: 0.7;
+    transition: all 0.2s;
+}
+
+.config-btn:hover {
+    opacity: 1;
+    transform: rotate(45deg);
+}
+
+.challenge-select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.challenge-select option {
+    background: var(--bg-color);
+    color: white;
+}
+
+.challenge-done {
+    font-size: 0.9rem;
+    color: var(--accent-green);
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+}
+
+.action-btn {
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    margin-top: auto;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.action-btn.disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Rewards Section */
+.rewards-section {
+    margin-bottom: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #fce7f3;
+    /* Light pinkish/gold tint */
+}
+
+/* --- ROUTINE CONFIG VIEW --- */
+#view-config-routine {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.config-header h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+}
+
+.reset-plan-btn {
+    background: rgba(220, 38, 38, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(220, 38, 38, 0.4);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.reset-plan-btn:hover {
+    background: rgba(220, 38, 38, 0.4);
+    color: white;
+}
+
+.config-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.day-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.day-selector label,
+.form-group label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.day-selector select,
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 100%;
+}
+
+.day-selector select:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.routine-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.action-buttons-config {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.save-btn {
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: all 0.2s;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+}
+
+
+.coin-stat span {
+    color: #ffd700;
+    /* Gold */
+}
+
+.add-reward-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.add-reward-form input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    flex: 1;
+}
+
+.add-reward-form button {
+    background: var(--accent-blue);
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.rewards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.reward-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.reward-info h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.reward-info .cost {
+    display: block;
+    color: #ffd700;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.reward-actions {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    gap: 5px;
+}
+
+.redeem-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.redeem-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: #f87171;
+}
+
+/* Smart Habit - Grid System */
+.habit-grid {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+    /* Safety wrap for small screens */
+}
+
+.habit-square {
+    width: 14px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.habit-square:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.2);
+}
+
+/* Active States per Category */
+[data-category="mental"] .habit-square.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 5px var(--accent-blue);
+}
+
+[data-category="fisico"] .habit-square.active {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    box-shadow: 0 0 5px var(--accent-green);
+}
+
+[data-category="espiritual"] .habit-square.active {
+    box-shadow: 0 0 5px var(--accent-purple);
+}
+
+/* Reset Button */
+.reset-btn {
+    margin-top: auto;
+    /* Push to bottom of sidebar */
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+/* Dashboard Progress Summary */
+.header-content {
+    flex: 1;
+}
+
+/* Routine Banner */
+.routine-banner {
+    background: linear-gradient(90deg, rgba(34, 197, 94, 0.2), transparent);
+    border-left: 4px solid var(--accent-green);
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--accent-green);
+    animation: slideIn 0.3s ease;
+}
+
+/* Subtasks Checklist */
+.subtasks-list {
+    margin: 0.5rem 0 1rem 0;
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.subtask-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.subtask-item input[type="checkbox"] {
+    accent-color: var(--accent-green);
+    cursor: pointer;
+}
+
+.subtask-item span.done {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* TASK ITEM */
+.task-item {
+    background: var(--card-bg);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Global Level Bar */
+.global-level-container {
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.level-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.level-bar-bg {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* --- ENGLISH B2 SECTION --- */
+.english-section-container {
+    margin-bottom: 1.5rem;
+}
+
+.english-card {
+    background: linear-gradient(145deg, rgba(30, 58, 138, 0.3), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* British touch */
+.english-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(220, 38, 38, 0.2) 50%);
+    pointer-events: none;
+}
+
+.english-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.english-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.savings-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.topic-box {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.topic-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.topic-nav button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.topic-nav button:hover {
+    color: white;
+}
+
+.month-label {
+    font-weight: 700;
+    color: var(--accent-blue);
+    font-size: 0.9rem;
+}
+
+.topic-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-style: italic;
+}
+
+.english-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.check-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.check-item.checked {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.check-item.checked span {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.check-item input {
+    accent-color: var(--accent-blue);
+}
+
+.english-progress {
+    margin-bottom: 0.8rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.progress-bar-bg {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--accent-blue);
+    transition: width 0.3s ease;
+}
+
+.english-actions {
+    text-align: right;
+}
+
+.edit-plan-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.edit-plan-btn:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.level-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+/* --- ANNUAL GOALS SECTION --- */
+.annual-goals-container {
+    margin-bottom: 2rem;
+}
+
+.annual-goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.goal-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.goal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.goal-card.goal-fisico {
+    border-left: 4px solid var(--accent-green);
+}
+
+.goal-card.goal-mental {
+    border-left: 4px solid var(--accent-blue);
+}
+
+.goal-card.goal-espiritual {
+    border-left: 4px solid var(--accent-purple);
+}
+
+.goal-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.goal-card h4 {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.goal-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* --- SPIRITUAL SECTION --- */
+.spiritual-section-container {
+    margin-bottom: 1.5rem;
+}
+
+.spiritual-card {
+    background: linear-gradient(145deg, rgba(139, 92, 246, 0.2), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.spiritual-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(139, 92, 246, 0.3) 50%);
+    pointer-events: none;
+}
+
+.spiritual-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.spiritual-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.spiritual-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.spiritual-progress {
+    margin-bottom: 0.8rem;
+}
+
+.spiritual-actions {
+    text-align: right;
+}
+
+/* --- ROUTINE CONFIG UPDATES --- */
+.category-header {
+    margin: 0 0 1rem 0;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.fisico-header {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--accent-green);
+    border-left: 4px solid var(--accent-green);
+}
+
+.mental-header {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--accent-blue);
+    border-left: 4px solid var(--accent-blue);
+}
+
+.espiritual-header {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--accent-purple);
+    border-left: 4px solid var(--accent-purple);
+}
+
+.routine-editor {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.routine-editor textarea {
+    min-height: 80px;
+}
+
+/* Circular Progress Rings */
+.rings-container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.ring-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ring-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+}
+
+.progress-ring circle {
+    transition: stroke-dashoffset 0.5s ease;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+/* Neon Glow Effects */
+.mental-ring {
+    filter: drop-shadow(0 0 4px var(--accent-blue));
+}
+
+.fisico-ring {
+    filter: drop-shadow(0 0 4px var(--accent-green));
+}
+
+.espiritual-ring {
+    filter: drop-shadow(0 0 4px var(--accent-purple));
+}
+
+.ring-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.progress-summary {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    max-width: 600px;
+}
+
+.progress-item {
+    flex: 1;
+}
+
+.p-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.p-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.p-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.mental-fill {
+    background: var(--accent-blue);
+}
+
+.fisico-fill {
+    background: var(--accent-green);
+}
+
+.espiritual-fill {
+    background: var(--accent-purple);
+}
+
+.cycle-badge {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.task-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
